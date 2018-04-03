@@ -1,0 +1,48 @@
+{
+  "name": "wmt-marketplace-sdk",
+  "version": "1.0.0",
+  "description": "Walmart Marketplace API SDK",
+  "main": "index.js",
+  "directories": {
+    "lib": "./lib",
+    "doc": "./doc",
+    "example": "./example",
+    "test": "./test"
+  },
+  "scripts": {
+    "tsc": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makanaleu/wmt-marketplace-sdk.git"
+  },
+  "keywords": [
+    "Walmart",
+    "API",
+    "SDK",
+    "marketplace",
+    "feeds",
+    "items",
+    "prices",
+    "promotions",
+    "orders",
+    "inventory",
+    "reports"
+  ],
+  "author": "Kane McConnell <kane@makanal.eu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makanaleu/wmt-marketplace-sdk/issues"
+  },
+  "homepage": "https://github.com/makanaleu/wmt-marketplace-sdk#readme",
+  "devDependencies": {
+    "ts-node": "latest",
+    "typescript": "latest",
+    "tslint": "latest",
+    "mocha": "latest",
+    "chai": "latest",
+    "nyc": "latest",
+    "@types/mocha": "latest",
+    "@types/chai": "latest"
+  }
+}
