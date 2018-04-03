@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# git files
+.gitmessage
+
+# VS Code files
+.vscode/
