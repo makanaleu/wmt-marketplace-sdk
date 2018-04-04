@@ -1,6 +1,4 @@
 ﻿Object.defineProperty(exports, "__esModule", { value: true });
-function printMsg() {
-    console.log('Walmart Marketplace API SDK');
-}
-exports.printMsg = printMsg;
+const WMT = require("./lib/wmt");
+exports.WMT = WMT;
 //# sourceMappingURL=index.js.map

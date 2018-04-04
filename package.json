@@ -9,8 +9,10 @@
     "example": "./example",
     "test": "./test"
   },
+  "types": "./index",
   "scripts": {
-    "tsc": "tsc -p ."
+    "build": "rimraf ./lib/ && tsc -p .",
+    "test": "mocha --require ts-node/register $(find ./test/ -name \"*.spec.ts\")"
   },
   "repository": {
     "type": "git",
@@ -42,7 +44,9 @@
     "mocha": "latest",
     "chai": "latest",
     "nyc": "latest",
+    "rimraf": "latest",
     "@types/mocha": "latest",
-    "@types/chai": "latest"
+    "@types/chai": "latest",
+    "@types/node": "latest"
   }
 }
