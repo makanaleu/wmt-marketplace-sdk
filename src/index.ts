@@ -1,5 +1,3 @@
-function printMsg () {
-  console.log('Walmart Marketplace API SDK');
-}
-
-export { printMsg }
+// Require the WMT module from the library.
+import * as WMT from './lib/wmt';
+export { WMT };
