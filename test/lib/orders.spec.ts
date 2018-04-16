@@ -23,8 +23,9 @@ WMT.Request.Credentials = new WMT.Config.Credentials(
   'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAq7BFUpkGp3+LQmlQYx2eqzDV+xeG8kx/sQFV18S5JhzGeIJNA72wSeukEPojtqUyX2J0CciPBh7eqclQ2zpAswIDAQABAkAgisq4+zRdrzkwH1ITV1vpytnkO/NiHcnePQiOW0VUybPyHoGM/jf75C5xET7ZQpBe5kx5VHsPZj0CBb3b+wSRAiEA2mPWCBytosIU/ODRfq6EiV04lt6waE7I2uSPqIC20LcCIQDJQYIHQII+3YaPqyhGgqMexuuuGx+lDKD6/Fu/JwPb5QIhAKthiYcYKlL9h8bjDsQhZDUACPasjzdsDEdq8inDyLOFAiEAmCr/tZwA3qeAZoBzI10DGPIuoKXBd3nk/eBxPkaxlEECIQCNymjsoI7GldtujVnr1qT+3yedLfHKsrDVjIT3LsvTqw=='
 );
 
-var response = fs.readFileSync(__dirname + '/../data/sample-getallreleased.json', 'utf8');
+var releasedResponse = fs.readFileSync(__dirname + '/../data/sample-getallreleased.json', 'utf8');
 
+// Mock Get All Released Orders response.
 nock('https://marketplace.walmartapis.com')
   .get('/v3/orders/released')
   .query({
@@ -32,15 +33,19 @@ nock('https://marketplace.walmartapis.com')
     createdEndDate: '2018-04-02T00:00:00.000Z',
     limit: '200'
   })
-  .reply(200, response.trim());
+  .reply(200, releasedResponse.trim());
+
+// Mock Acknowledge Order response.
+nock('https://marketplace.walmartapis.com')
+  .post('/v3/orders/2380639477120/acknowledge')
+  .reply(200, releasedResponse.trim());
 
 describe('Get All Released Orders', () => {
   it('Response is a valid PurchaseOrderResponse.', () => {
     WMT.Orders.getAllReleased({
       CreatedStartDate: new Date('01 April 2018 00:00 UTC'),
       CreatedEndDate: new Date('02 April 2018 00:00 UTC'),
-      Limit: 200,
-      Timestamp: 1523547757077,
+      Limit: 200
     }).then((response) => {
       let parsedResponse = new Orders.PurchaseOrder.PurchaseOrderResponse(JSON.parse(response));
       expect(parsedResponse).instanceof(Orders.PurchaseOrder.PurchaseOrderResponse);
@@ -102,5 +107,17 @@ describe('Get All Released Orders', () => {
         });
       });
     })
+  });
+});
+
+describe('Acknowledge Order', () => {
+  it('Response is the PurchaseOrderResponse for the PurchaseOrderId.', () => {
+    WMT.Orders.ackOrder({
+      PurchaseOrderId: 2380639477120
+    }).then((response) => {
+      let parsedResponse = new Orders.PurchaseOrder.PurchaseOrderResponse(JSON.parse(response));
+      expect(parsedResponse).instanceof(Orders.PurchaseOrder.PurchaseOrderResponse);
+      expect(parsedResponse.list.elements.order[0].purchaseOrderId).to.equal('2380639477120');
+    });
   });
 });

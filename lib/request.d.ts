@@ -41,8 +41,11 @@ export interface RequestParams extends RequestHeaders {
     /**
      * Query parameters for the request.
      */
-    Query: RequestQuery;
-    Method: string;
+    Query?: RequestQuery;
+    /**
+     * HTTP method used for the request (i.e. 'GET', 'POST').
+     */
+    Method?: string;
 }
 /**
  * Query parameters for the request. The interface includes all possible properties
