@@ -49,8 +49,11 @@ export interface RequestParams extends RequestHeaders {
   /**
    * Query parameters for the request.
    */
-  Query: RequestQuery;
-  Method: string;
+  Query?: RequestQuery;
+  /**
+   * HTTP method used for the request (i.e. 'GET', 'POST').
+   */
+  Method?: string;
 }
 
 /**
@@ -108,7 +111,8 @@ export function execute(request: RequestParams): PromiseLike<any> {
    * The complete request URL including the query parameters. The URI is not encoded
    * due to the non-encoded format required of date query params.
    */
-  let requestUrl: string = request.BaseUrl + '?'
+  let requestUrl: string = request.BaseUrl
+    + ((request.Query) ? '?' : '')
     + qs.stringify(request.Query, null, null, { encodeURIComponent: (uri: string) => uri });
 
   /**
@@ -121,6 +125,7 @@ export function execute(request: RequestParams): PromiseLike<any> {
   });
 
   return rp({
+    method: request.Method.toUpperCase(),
     uri: requestUrl,
     headers: signedHeaders
   })

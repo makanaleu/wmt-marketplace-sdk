@@ -15,7 +15,8 @@ Walmart Marketplace API SDK
 ## Features
 
 - **Orders**
-  - All Release Orders: Retrieves all the orders with line items that are in the "created" status, that is, these orders have been released from the Walmart Order Management System to the seller for processing. The released orders are the orders that are ready for a seller to fulfill.
+  - **All Release Orders:** Retrieves all the orders with line items that are in the "created" status, that is, these orders have been released from the Walmart Order Management System to the seller for processing. The released orders are the orders that are ready for a seller to fulfill.
+  - **Acknowledge Orders:** You can use this API to acknowledge an entire order, including all of its order lines. Walmart requires a seller to acknowledge orders within four hours of receipt of the order, except in extenuating circumstances.
 
 ## Roadmap
 
@@ -28,7 +29,7 @@ You only need to set your API credentials once in the process. They don't need t
 set for each call within the same process.
 
 ```javascript
-import * WMT from './lib/wmt';
+import { WMT } from 'wmt-marketplace-sdk';
 
 WMT.Request.Credentials = new WMT.Config.Credentials(
   '38b7eb6c-3672-4022-93a2-f47794f36338', // CHANNEL.TYPE
@@ -46,6 +47,17 @@ WMT.Orders.getAllReleased({
   Limit: 10 // optional, defaults to 200 (max)
 }).then((purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse) => {
   // do something with the orders
+});
+```
+
+### Acknowledge Orders
+
+```javascript
+WMT.Orders.ackOrder({
+  PurchaseOrderId: 2380639477120
+}). then((purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse) => {
+  // The response to a successful call contains the acknowledged order, which should
+  // now reflect an "Acknowledge" status.
 });
 ```
 
@@ -67,19 +79,19 @@ Package | Version | Dev
 [wmt-marketplace-auth](https://www.npmjs.com/package/wmt-marketplace-auth) | 1.1.0 | ✖
 [request](https://www.npmjs.com/package/request) | 2.85.0 | ✖
 [request-promise](https://www.npmjs.com/package/request-promise) | 4.2.2 | ✖
-[ts-node](https://www.npmjs.com/package/ts-node) | latest | ✔
-[typescript](https://www.npmjs.com/package/typescript) | latest | ✔
-[tslint](https://www.npmjs.com/package/tslint) | latest | ✔
-[mocha](https://www.npmjs.com/package/mocha) | latest | ✔
-[nock](https://www.npmjs.com/package/nock) | latest | ✔
-[chai](https://www.npmjs.com/package/chai) | latest | ✔
-[node-readme](https://www.npmjs.com/package/node-readme) | latest | ✔
-[nyc](https://www.npmjs.com/package/nyc) | latest | ✔
-[rimraf](https://www.npmjs.com/package/rimraf) | latest | ✔
-[@types/mocha](https://www.npmjs.com/package/@types/mocha) | latest | ✔
-[@types/nock](https://www.npmjs.com/package/@types/nock) | latest | ✔
-[@types/chai](https://www.npmjs.com/package/@types/chai) | latest | ✔
-[@types/node](https://www.npmjs.com/package/@types/node) | latest | ✔
+[ts-node](https://www.npmjs.com/package/ts-node) | 5.0.1 | ✔
+[typescript](https://www.npmjs.com/package/typescript) | 2.8.1 | ✔
+[tslint](https://www.npmjs.com/package/tslint) | 5.9.1 | ✔
+[mocha](https://www.npmjs.com/package/mocha) | 5.1.0 | ✔
+[nock](https://www.npmjs.com/package/nock) | 9.2.5 | ✔
+[chai](https://www.npmjs.com/package/chai) | 4.1.2 | ✔
+[node-readme](https://www.npmjs.com/package/node-readme) | 0.1.9 | ✔
+[nyc](https://www.npmjs.com/package/nyc) | 11.6.0 | ✔
+[rimraf](https://www.npmjs.com/package/rimraf) | 2.6.2 | ✔
+[@types/mocha](https://www.npmjs.com/package/@types/mocha) | 5.0.0 | ✔
+[@types/nock](https://www.npmjs.com/package/@types/nock) | 9.1.3 | ✔
+[@types/chai](https://www.npmjs.com/package/@types/chai) | 4.1.2 | ✔
+[@types/node](https://www.npmjs.com/package/@types/node) | 9.6.5 | ✔
 [@types/request-promise](https://www.npmjs.com/package/@types/request-promise) | 4.1.41 | ✔
 [@types/bluebird](https://www.npmjs.com/package/@types/bluebird) | 3.5.20 | ✔
 
