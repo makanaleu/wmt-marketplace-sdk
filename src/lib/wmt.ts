@@ -1,3 +1,5 @@
-import * as Authentication from './auth';
+import * as Config from './config';
+import * as Request from './request';
+import * as Orders from './orders';
 
-export { Authentication }
+export { Config, Request, Orders }

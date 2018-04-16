@@ -1,6 +1,6 @@
 {
   "name": "wmt-marketplace-sdk",
-  "version": "1.0.1-dev",
+  "version": "1.1.0",
   "description": "Walmart Marketplace API SDK",
   "main": "index.js",
   "directories": {
@@ -12,6 +12,8 @@
   "types": "./index",
   "scripts": {
     "build": "rimraf ./lib/ && tsc -p .",
+    "readme": "rm ./README.md && node ./node_modules/.bin/node-readme",
+    "package": "npm run build && npm run readme",
     "test": "mocha --require ts-node/register $(find ./test/ -name \"*.spec.ts\")"
   },
   "repository": {
@@ -42,11 +44,21 @@
     "typescript": "latest",
     "tslint": "latest",
     "mocha": "latest",
+    "nock": "latest",
     "chai": "latest",
+    "node-readme": "latest",
     "nyc": "latest",
     "rimraf": "latest",
     "@types/mocha": "latest",
+    "@types/nock": "latest",
     "@types/chai": "latest",
-    "@types/node": "latest"
+    "@types/node": "latest",
+    "@types/request-promise": "4.1.41",
+    "@types/bluebird": "3.5.20"
+  },
+  "dependencies": {
+    "wmt-marketplace-auth": "1.1.0",
+    "request": "2.85.0",
+    "request-promise": "4.2.2"
   }
 }
