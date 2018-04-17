@@ -4,7 +4,6 @@ import * as Config from '../../lib/config';
 import * as Orders from '../../lib/orders';
 import { expect } from 'chai';
 import * as fs from 'fs';
-import { Order } from '../../lib/orders/purchase';
 
 var nock = require('nock');
 
@@ -24,6 +23,8 @@ WMT.Request.Credentials = new WMT.Config.Credentials(
 );
 
 var releasedResponse = fs.readFileSync(__dirname + '/../data/sample-getallreleased.json', 'utf8');
+var ackResponse = fs.readFileSync(__dirname + '/../data/sample-ackresponse.json', 'utf8');
+var shipmentResponse = fs.readFileSync(__dirname + '/../data/sample-shipmentresponse.json', 'utf8');
 
 // Mock Get All Released Orders response.
 nock('https://marketplace.walmartapis.com')
@@ -38,7 +39,12 @@ nock('https://marketplace.walmartapis.com')
 // Mock Acknowledge Order response.
 nock('https://marketplace.walmartapis.com')
   .post('/v3/orders/2380639477120/acknowledge')
-  .reply(200, releasedResponse.trim());
+  .reply(200, ackResponse.trim());
+
+// Mock Shipment Update response.
+nock('https://marketplace.walmartapis.com')
+  .post('/v3/orders/2380639477120/shipping')
+  .reply(200, shipmentResponse.trim());
 
 describe('Get All Released Orders', () => {
   it('Response is a valid PurchaseOrderResponse.', () => {
@@ -114,6 +120,50 @@ describe('Acknowledge Order', () => {
   it('Response is the PurchaseOrderResponse for the PurchaseOrderId.', () => {
     WMT.Orders.ackOrder({
       PurchaseOrderId: 2380639477120
+    }).then((response) => {
+      let parsedResponse = new Orders.PurchaseOrder.PurchaseOrderResponse(JSON.parse(response));
+      expect(parsedResponse).instanceof(Orders.PurchaseOrder.PurchaseOrderResponse);
+      expect(parsedResponse.list.elements.order[0].purchaseOrderId).to.equal('2380639477120');
+    });
+  });
+});
+
+describe('Shipment Update', () => {
+  it('Response is the PurchaseOrderResponse for the PurchaseOrderId.', () => {
+    var shipment = new Orders.Shipment.OrderShipmentRequest({
+      orderShipment: {
+        orderLines: {
+          orderLine: [
+            {
+              lineNumber: 1,
+              orderLineStatuses: {
+                orderLineStatus: [
+                  {
+                    status: "Shipped",
+                    statusQuantity: {
+                      unitOfMeasurement: "EA",
+                      amount: 1
+                    },
+                    trackingInfo: {
+                      shipDateTime: 1488480443000,
+                      carrierName: {
+                        otherCarrier: null,
+                        carrier: "FedEx"
+                      },
+                      methodCode: "Express",
+                      trackingNumber: "21345"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    });
+    WMT.Orders.postShippingUpdate({
+      PurchaseOrderId: 2380639477120,
+      PurchaseOrderShipment: shipment
     }).then((response) => {
       let parsedResponse = new Orders.PurchaseOrder.PurchaseOrderResponse(JSON.parse(response));
       expect(parsedResponse).instanceof(Orders.PurchaseOrder.PurchaseOrderResponse);
