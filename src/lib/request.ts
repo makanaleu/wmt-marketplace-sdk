@@ -54,6 +54,10 @@ export interface RequestParams extends RequestHeaders {
    * HTTP method used for the request (i.e. 'GET', 'POST').
    */
   Method?: string;
+  /**
+   * Request body.
+   */
+  Body?: string;
 }
 
 /**
@@ -127,7 +131,8 @@ export function execute(request: RequestParams): PromiseLike<any> {
   return rp({
     method: request.Method.toUpperCase(),
     uri: requestUrl,
-    headers: signedHeaders
+    headers: signedHeaders,
+    body: request.Body
   })
     .catch(UnauthorizedError, (error) => {
       throw new Error('Unauthorized. Check that Request.Credentials is set correctly.');

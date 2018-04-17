@@ -387,7 +387,7 @@ export declare class OrderLineTrackingInfo {
     /**
      * The URL for tracking the shipment.
      */
-    trackingUrl: string;
+    trackingUrl?: string;
     constructor(orderlinetrackinginfo: OrderLineTrackingInfo);
 }
 /**
@@ -395,14 +395,13 @@ export declare class OrderLineTrackingInfo {
  */
 export declare class OrderLinePackageCarrier {
     /**
-     * Other carrier name.
-     *
-     * @todo We're not really sure what this field is for. All samples from Walmart
-     *       show the value as null.
+     * Other carrier name - if one carrier, use 'null'. If otherCarrier is provided,
+     * trackingUrl must also be provided.
      */
     otherCarrier: string;
     /**
-     * The package shipment carrier.
+     * The package shipment carrier. Valid entries are: UPS, USPS, FedEx, Airborne,
+     * OnTrac, DHL, NG, LS, UDS, UPSMI, FDX
      */
     carrier: string;
     constructor(orderlinepackagecarrier: OrderLinePackageCarrier);

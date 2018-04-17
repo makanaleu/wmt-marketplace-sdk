@@ -1,7 +1,8 @@
 import * as Request from './request';
 import * as PurchaseOrder from './orders/purchase';
+import * as Shipment from './orders/shipment';
 
-export { PurchaseOrder };
+export { PurchaseOrder, Shipment };
 
 /**
  * The request for getting All Released Orders.
@@ -35,6 +36,20 @@ export interface AcknowledgeOrderRequest extends Request.RequestHeaders {
 }
 
 /**
+ * The request for requesting a shipping update.
+ */
+export interface ShippingUpdateRequest extends Request.RequestHeaders {
+  /**
+   * A unique ID associated with the seller's purchase order.
+   */
+  PurchaseOrderId: number;
+  /**
+   * Information about the shipment.
+   */
+  PurchaseOrderShipment: Shipment.OrderShipmentRequest;
+}
+
+/**
  * Retrieves all the orders with line items that are in the "created" status, that is,
  * these orders have been released from the Walmart Order Management System to the
  * seller for processing. The released orders are the orders that are ready for a
@@ -42,8 +57,8 @@ export interface AcknowledgeOrderRequest extends Request.RequestHeaders {
  *
  * @param params The GetAllReleaseRequest.
  *
- * @returns Result of the Promise is an Orders.PurchaseOrder.PurchaseOrderResponse if
- *          `Accept` is `application/json`.
+ * @return Result of the Promise is an Orders.PurchaseOrder.PurchaseOrderResponse if
+ *         `Accept` is `application/json`.
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#getAllReleasedOrders}
  */
@@ -78,8 +93,8 @@ export function getAllReleased(params: GetAllReleasedRequest): PromiseLike<any> 
  *
  * @param params The AcknowledgeOrderRequest.
  *
- * @returns Result of the Promise is an Orders.PurchaseOrder.PurchaseOrderResponse if
- *          `Accept` is `application/json`.
+ * @return Result of the Promise is an Orders.PurchaseOrder.PurchaseOrderResponse if
+ *         `Accept` is `application/json`.
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#acknowledgingOrders}
  */
@@ -87,6 +102,33 @@ export function ackOrder(params: AcknowledgeOrderRequest): PromiseLike<any> {
   let requestParams: Request.RequestParams = {
     BaseUrl: `https://marketplace.walmartapis.com/v3/orders/${params.PurchaseOrderId}/acknowledge`,
     Method: 'POST',
+    Accept: params.Accept,
+    ContentType: params.ContentType,
+    Timestamp: params.Timestamp
+  }
+
+  return Request.execute(requestParams);
+}
+
+/**
+ * Updates the status of order lines to "Shipped" and triggers the charge to the
+ * customer. Sellers must acknowledge your orders before sending a shipping update to
+ * avoid underselling. After canceling your order, update the inventory for the
+ * canceled order and send it in the next inventory feed. An order line, once marked
+ * as shipped, cannot be updated.
+ *
+ * @param params The ShippingUpdateRequest.
+ *
+ * @return Result of the Promise is an Orders.PurchaseOrder.PurchaseOrderResponse if
+ *         `Accept` is `application/json`.
+ *
+ * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#shippingNotificationsUpdates}
+ */
+export function postShippingUpdate(params: ShippingUpdateRequest): PromiseLike<any> {
+  let requestParams: Request.RequestParams = {
+    BaseUrl: `https://marketplace.walmartapis.com/v3/orders/${params.PurchaseOrderId}/shipping`,
+    Method: 'POST',
+    Body: JSON.stringify(params.PurchaseOrderShipment),
     Accept: params.Accept,
     ContentType: params.ContentType,
     Timestamp: params.Timestamp

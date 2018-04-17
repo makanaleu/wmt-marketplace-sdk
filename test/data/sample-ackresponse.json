@@ -1,0 +1,86 @@
+{
+  "list": {
+    "meta": {
+      "totalCount": 34,
+      "limit": 200,
+      "nextCursor": null
+    },
+    "elements": {
+      "order": [
+        {
+          "purchaseOrderId": "2380639477120",
+          "customerOrderId": "1577661839431",
+          "customerEmailId": "F929F4F9C498EF4589B2E0F63E60DB38@relay.walmart.com",
+          "orderDate": 1523535882000,
+          "shippingInfo": {
+            "phone": "3673221532",
+            "estimatedDeliveryDate": 1524279600000,
+            "estimatedShipDate": 1523674800000,
+            "methodCode": "Value",
+            "postalAddress": {
+              "name": "Christina  Coolidge",
+              "address1": "22522 Northpark Parkway",
+              "address2": "Apt 92",
+              "city": "Cornwall",
+              "state": "TX",
+              "postalCode": "77294",
+              "country": "USA",
+              "addressType": "RESIDENTIAL"
+            }
+          },
+          "orderLines": {
+            "orderLine": [
+              {
+                "lineNumber": "3",
+                "item": {
+                  "productName": "Some Very Lovely Socks",
+                  "sku": "12P42"
+                },
+                "charges": {
+                  "charge": [
+                    {
+                      "chargeType": "PRODUCT",
+                      "chargeName": "ItemPrice",
+                      "chargeAmount": {
+                        "currency": "USD",
+                        "amount": 12.98
+                      },
+                      "tax": null
+                    }
+                  ]
+                },
+                "orderLineQuantity": {
+                  "unitOfMeasurement": "EACH",
+                  "amount": "1"
+                },
+                "statusDate": 1523535963000,
+                "orderLineStatuses": {
+                  "orderLineStatus": [
+                    {
+                      "status": "Acknowledged",
+                      "statusQuantity": {
+                        "unitOfMeasurement": "EACH",
+                        "amount": "1"
+                      },
+                      "cancellationReason": null,
+                      "trackingInfo": null
+                    }
+                  ]
+                },
+                "refund": null,
+                "fulfillment": {
+                  "fulfillmentOption": "S2H",
+                  "shipMethod": "VALUE",
+                  "storeId": null,
+                  "offerId": "61E8276D4BE74BA2C8DBAD67239D6C49",
+                  "pickUpDateTime": 1524106800000,
+                  "pickUpBy": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
