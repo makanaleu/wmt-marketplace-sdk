@@ -132,7 +132,8 @@ export function execute(request: RequestParams): PromiseLike<any> {
     method: request.Method.toUpperCase(),
     uri: requestUrl,
     headers: signedHeaders,
-    body: request.Body
+    body: request.Body,
+    timeout: 120000
   })
     .catch(UnauthorizedError, (error) => {
       throw new Error('Unauthorized. Check that Request.Credentials is set correctly.');

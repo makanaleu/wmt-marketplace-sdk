@@ -18,6 +18,8 @@ Walmart Marketplace API SDK
   - **All Release Orders:** Retrieves all the orders with line items that are in the "created" status, that is, these orders have been released from the Walmart Order Management System to the seller for processing. The released orders are the orders that are ready for a seller to fulfill.
   - **Acknowledge Orders:** You can use this API to acknowledge an entire order, including all of its order lines. Walmart requires a seller to acknowledge orders within four hours of receipt of the order, except in extenuating circumstances.
   - **Shipping Updates:** Updates the status of order lines to "Shipped" and triggers the charge to the customer.
+- **Requests**
+  - **Timeout:** All requests are set with a 2-minute timeout to avoid overuse of resources when the API is slow to respond.
 
 ## Roadmap
 
@@ -46,7 +48,9 @@ WMT.Orders.getAllReleased({
   CreatedStartDate: new Date('01 April 2018 00:00 UTC'), // required
   CreatedEndDate: new Date('02 April 2018 00:00 UTC'), // optional, defaults to current time
   Limit: 10 // optional, defaults to 200 (max)
-}).then((purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse) => {
+}).then((response: string) => {
+  let purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse = JSON.parse(response);
+
   // do something with the orders
 });
 ```
@@ -56,9 +60,12 @@ WMT.Orders.getAllReleased({
 ```javascript
 WMT.Orders.ackOrder({
   PurchaseOrderId: 2380639477120
-}).then((purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse) => {
-  // The response to a successful call contains the acknowledged order, which should
-  // now reflect an "Acknowledged" status.
+}).then((response: string) => {
+  let orderResponse: WMT.Orders.PurchaseOrder.SingleOrderResponse = JSON.parse(response);
+  // The response to a successful call contains the acknowledged order. Although the
+  // API documentation claims the order will bear an "Acknowledged" status, we have
+  // not found this to be true in production. It's simply a copy of the order that
+  // was acknowledged, still bearing a "Created" status.
 });
 ```
 
@@ -72,9 +79,9 @@ var shipment = new WMT.Orders.Shipment.OrderShipmentRequest(
 WMT.Orders.postShipingUpdate({
   PurchaseOrderId: 2380639477120,
   PurchaseOrderShipment: shipment
-}).then((purchaseOrders: WMT.Orders.PurchaseOrder.PurchaseOrderResponse) => {
-  // The response to a successful call contains the purchase order, which should
-  // now reflect an "Shipped" status.
+}).then((response: string) => {
+  let orderResponse: WMT.Orders.PurchaseOrder.SingleOrderResponse = JSON.parse(response)
+  // The response to a successful call contains the purchase order.
 });
 ```
 
