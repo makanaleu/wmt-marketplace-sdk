@@ -42,6 +42,21 @@ export class PurchaseOrderElements {
 }
 
 /**
+ * An object containing a single order. Typically received in API responses such as
+ * when acknowleding orders.
+ */
+export class SingleOrderResponse {
+  /**
+   * Semantic wrapper of a single Order.
+   */
+  order: Order;
+
+  constructor(response: SingleOrderResponse) {
+    this.order = response.order;
+  }
+}
+
+/**
  * Information about the purchase order.
  */
 export class Order {
@@ -145,7 +160,7 @@ export class PostalAddress {
   /**
    * The ZIP code of the shipping address.
    */
-  postalCode: number;
+  postalCode: string;
   /**
    * The country of the shipping address.
    */

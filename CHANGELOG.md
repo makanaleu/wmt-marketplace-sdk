@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2018-04-17, Version 1.3.1, @kmcconnell
+
+### Notable Changes
+
+- README:
+  - Added documentation regarding the inaccuracies between Walmart Marketplace API
+    documentation and production responses received. (Kane McConnell) #11
+- request:
+  - Added timeout of `120000` ms (2 minutes) to request promise to avoid overuse of
+    resources when the API is down or slow to return response headers.
+    (Kane McConnell) #11
+- purchase:
+  - Added `SingleOrderResponse` to `WMT.Orders.PurchaseOrder` to match object
+    strutcture received when using the `WMT.Orders.ackOrder()` method.
+    (Kane McConnell) #11
+
 ## 2018-04-17, Version 1.3.0, @kmcconnell
 
 ### Notable Changes
@@ -19,7 +35,6 @@
 - request:
   - Added optional `Body` property to the request, used when the API expects a
     body in the request (i.e. shipping updates). (Kane McConnell) #9
-
 
 ## 2018-04-16, Version 1.2.0, @kmcconnell
 
