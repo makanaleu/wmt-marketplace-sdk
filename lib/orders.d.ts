@@ -1,4 +1,5 @@
-﻿import * as Request from './request';
+﻿/// <reference types="bluebird" />
+import * as Request from './request';
 import * as PurchaseOrder from './orders/purchase';
 import * as Shipment from './orders/shipment';
 export { PurchaseOrder, Shipment };
@@ -57,7 +58,7 @@ export interface ShippingUpdateRequest extends Request.RequestHeaders {
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#getAllReleasedOrders}
  */
-export declare function getAllReleased(params: GetAllReleasedRequest): PromiseLike<any>;
+export declare function getAllReleased(params: GetAllReleasedRequest): Request.Promise<any>;
 /**
  * Acknowledge an entire order, including all of its order lines. Walmart requires a
  * seller to acknowledge orders within four hours of receipt of the order, except in
@@ -77,7 +78,7 @@ export declare function getAllReleased(params: GetAllReleasedRequest): PromiseLi
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#acknowledgingOrders}
  */
-export declare function ackOrder(params: AcknowledgeOrderRequest): PromiseLike<any>;
+export declare function ackOrder(params: AcknowledgeOrderRequest): Request.Promise<any>;
 /**
  * Updates the status of order lines to "Shipped" and triggers the charge to the
  * customer. Sellers must acknowledge your orders before sending a shipping update to
@@ -92,4 +93,4 @@ export declare function ackOrder(params: AcknowledgeOrderRequest): PromiseLike<a
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#shippingNotificationsUpdates}
  */
-export declare function postShippingUpdate(params: ShippingUpdateRequest): PromiseLike<any>;
+export declare function postShippingUpdate(params: ShippingUpdateRequest): Request.Promise<any>;

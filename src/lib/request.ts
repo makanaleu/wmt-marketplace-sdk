@@ -92,7 +92,7 @@ export interface RequestQuery {
  *
  * @return {Promise} Returns the response received from the Walmart Marketplace API.
  */
-export function execute(request: RequestParams): PromiseLike<any> {
+export function execute(request: RequestParams): Promise<any> {
   if (!Credentials) {
     throw new Error('Must set Request.Credentials before making a request.');
   }

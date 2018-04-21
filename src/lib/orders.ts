@@ -62,7 +62,7 @@ export interface ShippingUpdateRequest extends Request.RequestHeaders {
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#getAllReleasedOrders}
  */
-export function getAllReleased(params: GetAllReleasedRequest): PromiseLike<any> {
+export function getAllReleased(params: GetAllReleasedRequest): Request.Promise<any> {
   let requestParams: Request.RequestParams = {
     BaseUrl: 'https://marketplace.walmartapis.com/v3/orders/released',
     Query: {
@@ -98,7 +98,7 @@ export function getAllReleased(params: GetAllReleasedRequest): PromiseLike<any> 
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#acknowledgingOrders}
  */
-export function ackOrder(params: AcknowledgeOrderRequest): PromiseLike<any> {
+export function ackOrder(params: AcknowledgeOrderRequest): Request.Promise<any> {
   let requestParams: Request.RequestParams = {
     BaseUrl: `https://marketplace.walmartapis.com/v3/orders/${params.PurchaseOrderId}/acknowledge`,
     Method: 'POST',
@@ -124,7 +124,7 @@ export function ackOrder(params: AcknowledgeOrderRequest): PromiseLike<any> {
  *
  * @see {@link https://developer.walmart.com/#/apicenter/marketPlace/latest#shippingNotificationsUpdates}
  */
-export function postShippingUpdate(params: ShippingUpdateRequest): PromiseLike<any> {
+export function postShippingUpdate(params: ShippingUpdateRequest): Request.Promise<any> {
   let requestParams: Request.RequestParams = {
     BaseUrl: `https://marketplace.walmartapis.com/v3/orders/${params.PurchaseOrderId}/shipping`,
     Method: 'POST',
