@@ -1,4 +1,5 @@
-﻿import * as Config from './config';
+﻿/// <reference types="bluebird" />
+import * as Config from './config';
 import * as Promise from 'bluebird';
 export { Promise };
 /**
@@ -82,7 +83,7 @@ export interface RequestQuery {
  *
  * @return {Promise} Returns the response received from the Walmart Marketplace API.
  */
-export declare function execute(request: RequestParams): PromiseLike<any>;
+export declare function execute(request: RequestParams): Promise<any>;
 /**
  * Checks if the response includes a `statusCode` of `401`.
  *

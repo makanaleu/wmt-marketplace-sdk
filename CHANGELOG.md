@@ -1,5 +1,35 @@
 # CHANGELOG
 
+## 2018-04-21, Version 1.3.2, @kmcconnell
+
+### Notable Changes
+
+The return type of requests was updated to `Request.Promise` rather than `PromiseLike`.
+The `PromiseLike` type does not carry a `catch()` method, which meant parent modules
+could not chain catches onto the methods.
+
+Now when using the Orders methods, developers can add custom `.catch()`:
+
+```javascript
+WMT.Orders.getAllReleased({
+  // params
+})
+  .then((response: string) => {
+    // do something with the response
+  })
+  .catch((error: Error) => {
+    // handle the error.
+  });
+```
+
+- request:
+  - Changed return type of `execute` to `Promise` rather than `PromiseLike`,
+    which did not have the `.catch()` method available when imported into parent
+    modules. (Kane McConnell) #13
+- orders:
+  - Changed return type of all Orders methods to `Request.Promise` to pass through
+    the `.catch()` method to parent modules. (Kane McConnell) #13
+
 ## 2018-04-17, Version 1.3.1, @kmcconnell
 
 ### Notable Changes
