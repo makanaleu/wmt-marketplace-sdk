@@ -1,9 +1,9 @@
 import { Authenticate } from 'wmt-marketplace-auth';
 import * as Config from './config';
+import * as WMTError from './error';
 import * as Promise from 'bluebird';
 import * as rp from 'request-promise';
 import * as qs from 'querystring';
-import { StatusCodeError } from 'request-promise/errors';
 
 export { Promise };
 
@@ -140,16 +140,46 @@ export function execute(request: RequestParams): Promise<any> {
     })
     .catch(ContentNotFoundError, (error: any) => {
       if (error.error) {
-        let errorMessages: string[] = [];
         /**
-         * @example "error": "{\"errors\":{\"error\":[{\"code\":\"CONTENT_NOT_FOUND.GMP_ORDER_API\",\"description\":\"Failed when called getAllOrders. Orders not found for given search parameters \",\"info\":\"Requested content could not be found.\",\"severity\":\"INFO\",\"category\":\"APPLICATION\",\"causes\":[],\"errorIdentifiers\":{\"entry\":[]}}]}}"
+         * Walmart error response.
          */
-        let errorCollection: any = JSON.parse(error.error);
-        errorCollection.errors.error.forEach((err: any) => {
-          errorMessages.push(err.description);
+        let wmtErrorResponse: WMTError.WMTErrorResponse = JSON.parse(error.error);
+        /**
+         * Collection of error messages contained in the response.
+         */
+        let errorMessages: {}[] = [];
+        /**
+         * Collection of info message contained in the response.
+         */
+        let infoMessages: {}[] = [];
+
+        /**
+         * Separate info messages from error messages.
+         */
+        wmtErrorResponse.errors.error.forEach((err: WMTError.WMTError) => {
+          if (err.severity === "INFO") {
+            infoMessages.push({code: err.code, description: err.description.trim()});
+          } else {
+            errorMessages.push({code: err.code, description: err.description.trim()});
+          }
         });
-        throw new Error(JSON.stringify(errorMessages));
+        /**
+         * If error messages exists, throw new Error containing the error codes and
+         * messages.
+         */
+        if (errorMessages.length > 0) {
+          throw new Error(JSON.stringify(errorMessages));
+        }
+        /**
+         * If the error response only contains info messages, resolve and return the
+         * info codes and messages. This occurs, for example, when calling
+         * `getAllReleased` and no new released orders exist.
+         */
+        return Promise.resolve(JSON.stringify(infoMessages));
       }
+      /**
+       * Rethrow the error for all other 404 errors not otherwise handled.
+       */
       throw error;
     })
     .catch((error: any) => {

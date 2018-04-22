@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 2018-04-22, Version 1.3.4, @kmcconnell
+
+### Notable Changes
+
+Walmart returns a 404 error when no results exist for API method. For example, if
+calling `getAllReleased()`, Walmart returns a 404 if no new released orders exist.
+However, when using this method with a time-based trigger, it's expected that some
+calls will return no results. Therefore, the 404 `INFO` response is now caught and
+returned as a `Promise.resolve()` rather than a thrown error.
+
+```javascript
+[{"code":"CONTENT_NOT_FOUND.GMP_ORDER_API","description":"Failed when called getAllOrders. Orders not found for given search parameters"}]
+```
+
+- error:
+  - Added `WMTErrorResponse` classes to help with handling Walmart errors.
+    (Kane McConnell) #15
+- request:
+  - Improved `ContentNotFoundError` handler to separate info messages
+    from actual error messages. (Kane McConnell) #15
+
 ## 2018-04-22, Version 1.3.3, @kmcconnell
 
 ### Notable Changes
