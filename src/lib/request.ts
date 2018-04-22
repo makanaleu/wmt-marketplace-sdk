@@ -135,10 +135,24 @@ export function execute(request: RequestParams): Promise<any> {
     body: request.Body,
     timeout: 120000
   })
-    .catch(UnauthorizedError, (error) => {
+    .catch(UnauthorizedError, (error: any) => {
       throw new Error('Unauthorized. Check that Request.Credentials is set correctly.');
     })
-    .catch((error) => {
+    .catch(ContentNotFoundError, (error: any) => {
+      if (error.error) {
+        let errorMessages: string[] = [];
+        /**
+         * @example "error": "{\"errors\":{\"error\":[{\"code\":\"CONTENT_NOT_FOUND.GMP_ORDER_API\",\"description\":\"Failed when called getAllOrders. Orders not found for given search parameters \",\"info\":\"Requested content could not be found.\",\"severity\":\"INFO\",\"category\":\"APPLICATION\",\"causes\":[],\"errorIdentifiers\":{\"entry\":[]}}]}}"
+         */
+        let errorCollection: any = JSON.parse(error.error);
+        errorCollection.errors.error.forEach((err: any) => {
+          errorMessages.push(err.description);
+        });
+        throw new Error(JSON.stringify(errorMessages));
+      }
+      throw error;
+    })
+    .catch((error: any) => {
       throw error;
     });
 }
@@ -148,8 +162,19 @@ export function execute(request: RequestParams): Promise<any> {
  *
  * @param error Caught error from the request.
  *
- * @returns True if a `401` status code was received.
+ * @return True if a `401` status code was received.
  */
 export function UnauthorizedError(error: any): boolean {
   return error.statusCode === 401;
+}
+
+/**
+ * Checks if the response includes a `statusCode` of `404`.
+ *
+ * @param error Caught error from the request.
+ *
+ * @return True if a `404` status code was received.
+ */
+export function ContentNotFoundError(error: any): boolean {
+  return error.statusCode === 404;
 }

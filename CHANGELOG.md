@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2018-04-22, Version 1.3.3, @kmcconnell
+
+### Notable Changes
+
+- request:
+  - Added `ContentNotFoundError` filter to catch chain to handle parsing of Walmart
+    error response when no results are returned for the requested parameters. The
+    error description(s) are stringified as a JSON array and thrown as a new `Error`.
+    (Kane McConnell) #15
+
 ## 2018-04-21, Version 1.3.2, @kmcconnell
 
 ### Notable Changes
