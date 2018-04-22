@@ -89,6 +89,14 @@ export declare function execute(request: RequestParams): Promise<any>;
  *
  * @param error Caught error from the request.
  *
- * @returns True if a `401` status code was received.
+ * @return True if a `401` status code was received.
  */
 export declare function UnauthorizedError(error: any): boolean;
+/**
+ * Checks if the response includes a `statusCode` of `404`.
+ *
+ * @param error Caught error from the request.
+ *
+ * @return True if a `404` status code was received.
+ */
+export declare function ContentNotFoundError(error: any): boolean;
