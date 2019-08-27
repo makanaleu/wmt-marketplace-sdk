@@ -1,5 +1,4 @@
-﻿/// <reference types="bluebird" />
-import * as Config from './config';
+﻿import * as Config from './config';
 import * as Promise from 'bluebird';
 export { Promise };
 /**
@@ -24,10 +23,6 @@ export interface RequestHeaders {
      * 'application/xml' if an XML response is preferred instead of JSON.
      */
     ContentType?: string;
-    /**
-     * The Epoch timestamp for the request.
-     */
-    Timestamp?: number;
 }
 /**
  * Essential properties of every API request.

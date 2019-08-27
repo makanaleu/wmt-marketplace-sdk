@@ -4,6 +4,7 @@ import * as WMTError from './error';
 import * as Promise from 'bluebird';
 import * as rp from 'request-promise';
 import * as qs from 'querystring';
+import { TokenResponse } from 'wmt-marketplace-auth/lib/headers';
 
 export { Promise };
 
@@ -30,10 +31,6 @@ export interface RequestHeaders {
    * 'application/xml' if an XML response is preferred instead of JSON.
    */
   ContentType?: string;
-  /**
-   * The Epoch timestamp for the request.
-   */
-  Timestamp?: number;
 }
 
 /**
@@ -100,90 +97,104 @@ export function execute(request: RequestParams): Promise<any> {
   /**
    * Walmart authentication headers.
    */
-  let headers: Authenticate.Custom = new Authenticate.Custom;
-  if (request.CorrelationId) { headers.setCorrelationId(request.CorrelationId); }
-  if (request.Timestamp) { headers.setTimestamp(request.Timestamp); }
-  if (request.Accept) { headers.Accept = request.Accept; }
-  if (request.ContentType) { headers.ContentType = request.ContentType; }
+  let customHeaders: Authenticate.Custom = new Authenticate.Custom;
+  if (request.CorrelationId) { customHeaders.setCorrelationId(request.CorrelationId); }
+  if (request.Accept) { customHeaders.Accept = request.Accept; }
 
-  headers.setConsumer({
-    Channel: { Type: Credentials.Consumer.ChannelType },
-    ConsumerId: Credentials.Consumer.ConsumerId
-  });
-
-  /**
-   * The complete request URL including the query parameters. The URI is not encoded
-   * due to the non-encoded format required of date query params.
-   */
-  let requestUrl: string = request.BaseUrl
-    + ((request.Query) ? '?' : '')
-    + qs.stringify(request.Query, null, null, { encodeURIComponent: (uri: string) => uri });
-
-  /**
-   * The authentication headers including the digital signature.
-   */
-  let signedHeaders: Authenticate.Signed = Authenticate.sign(headers, {
-    RequestUrl: requestUrl,
-    PrivateKey: Credentials.PrivateKey,
-    RequestMethod: request.Method.toUpperCase()
+  let tokenReqHeaders: Authenticate.TokenRequestHeaders = Authenticate.getTokenRequestHeaders(customHeaders, {
+    ClientID: Credentials.ClientID,
+    ClientSecret: Credentials.ClientSecret
   });
 
   return rp({
-    method: request.Method.toUpperCase(),
-    uri: requestUrl,
-    headers: signedHeaders,
-    body: request.Body,
+    method: 'POST',
+    uri: 'https://marketplace.walmartapis.com/v3/token',
+    headers: tokenReqHeaders,
+    body: 'grant_type=client_credentials',
     timeout: 120000
-  })
-    .catch(UnauthorizedError, (error: any) => {
-      throw new Error('Unauthorized. Check that Request.Credentials is set correctly.');
-    })
-    .catch(ContentNotFoundError, (error: any) => {
-      if (error.error) {
-        /**
-         * Walmart error response.
-         */
-        let wmtErrorResponse: WMTError.WMTErrorResponse = JSON.parse(error.error);
-        /**
-         * Collection of error messages contained in the response.
-         */
-        let errorMessages: {}[] = [];
-        /**
-         * Collection of info message contained in the response.
-         */
-        let infoMessages: {}[] = [];
+  }).then((resp: any) => {
+    let tokenResponse: Authenticate.TokenResponse = JSON.parse(resp);
 
-        /**
-         * Separate info messages from error messages.
-         */
-        wmtErrorResponse.errors.error.forEach((err: WMTError.WMTError) => {
-          if (err.severity === "INFO") {
-            infoMessages.push({code: err.code, description: err.description.trim()});
-          } else {
-            errorMessages.push({code: err.code, description: err.description.trim()});
+    let reqHeaders: Authenticate.TokenHeaders = {
+      'WM_SVC.NAME': tokenReqHeaders["WM_SVC.NAME"],
+      'WM_QOS.CORRELATION_ID': tokenReqHeaders["WM_QOS.CORRELATION_ID"],
+      'Authorization': tokenReqHeaders.Authorization,
+      'Accept': tokenReqHeaders.Accept,
+      'Content-Type': request.ContentType || 'application/json',
+      'WM_SEC.ACCESS_TOKEN': tokenResponse.access_token
+    };
+
+    /**
+     * The complete request URL including the query parameters. The URI is not encoded
+     * due to the non-encoded format required of date query params.
+     */
+    let requestUrl: string = request.BaseUrl
+      + ((request.Query) ? '?' : '')
+      + qs.stringify(request.Query, null, null, { encodeURIComponent: (uri: string) => uri });
+
+    return rp({
+      method: request.Method.toUpperCase(),
+      uri: requestUrl,
+      headers: reqHeaders,
+      body: request.Body,
+      timeout: 120000
+    })
+      .catch(UnauthorizedError, (error: any) => {
+        throw new Error('Unauthorized. Failed to authorize with the access token.');
+      })
+      .catch(ContentNotFoundError, (error: any) => {
+        if (error.error) {
+          /**
+           * Walmart error response.
+           */
+          let wmtErrorResponse: WMTError.WMTErrorResponse = JSON.parse(error.error);
+          /**
+           * Collection of error messages contained in the response.
+           */
+          let errorMessages: {}[] = [];
+          /**
+           * Collection of info message contained in the response.
+           */
+          let infoMessages: {}[] = [];
+
+          /**
+           * Separate info messages from error messages.
+           */
+          wmtErrorResponse.errors.error.forEach((err: WMTError.WMTError) => {
+            if (err.severity === "INFO") {
+              infoMessages.push({ code: err.code, description: err.description.trim() });
+            } else {
+              errorMessages.push({ code: err.code, description: err.description.trim() });
+            }
+          });
+          /**
+           * If error messages exists, throw new Error containing the error codes and
+           * messages.
+           */
+          if (errorMessages.length > 0) {
+            throw new Error(JSON.stringify(errorMessages));
           }
-        });
-        /**
-         * If error messages exists, throw new Error containing the error codes and
-         * messages.
-         */
-        if (errorMessages.length > 0) {
-          throw new Error(JSON.stringify(errorMessages));
+          /**
+           * If the error response only contains info messages, resolve and return the
+           * info codes and messages. This occurs, for example, when calling
+           * `getAllReleased` and no new released orders exist.
+           */
+          return Promise.resolve(JSON.stringify(infoMessages));
         }
         /**
-         * If the error response only contains info messages, resolve and return the
-         * info codes and messages. This occurs, for example, when calling
-         * `getAllReleased` and no new released orders exist.
+         * Rethrow the error for all other 404 errors not otherwise handled.
          */
-        return Promise.resolve(JSON.stringify(infoMessages));
-      }
-      /**
-       * Rethrow the error for all other 404 errors not otherwise handled.
-       */
-      throw error;
+        throw new Error(error);
+      })
+      .catch((error: any) => {
+        throw new Error(error);
+      });
+  })
+    .catch(UnauthorizedError, (error: any) => {
+      throw new Error('Unauthorized. Failed to authorize the Token API request.');
     })
     .catch((error: any) => {
-      throw error;
+      throw new Error(error);
     });
 }
 

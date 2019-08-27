@@ -72,8 +72,7 @@ export function getAllReleased(params: GetAllReleasedRequest): Request.Promise<a
     },
     Method: 'GET',
     Accept: params.Accept,
-    ContentType: params.ContentType,
-    Timestamp: params.Timestamp
+    ContentType: params.ContentType
   }
 
   return Request.execute(requestParams);
@@ -103,8 +102,7 @@ export function ackOrder(params: AcknowledgeOrderRequest): Request.Promise<any> 
     BaseUrl: `https://marketplace.walmartapis.com/v3/orders/${params.PurchaseOrderId}/acknowledge`,
     Method: 'POST',
     Accept: params.Accept,
-    ContentType: params.ContentType,
-    Timestamp: params.Timestamp
+    ContentType: params.ContentType
   }
 
   return Request.execute(requestParams);
@@ -130,8 +128,7 @@ export function postShippingUpdate(params: ShippingUpdateRequest): Request.Promi
     Method: 'POST',
     Body: JSON.stringify(params.PurchaseOrderShipment),
     Accept: params.Accept,
-    ContentType: params.ContentType,
-    Timestamp: params.Timestamp
+    ContentType: params.ContentType
   }
 
   return Request.execute(requestParams);

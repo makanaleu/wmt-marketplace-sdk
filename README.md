@@ -35,9 +35,8 @@ set for each call within the same process.
 import { WMT } from 'wmt-marketplace-sdk';
 
 WMT.Request.Credentials = new WMT.Config.Credentials(
-  '38b7eb6c-3672-4022-93a2-f47794f36338', // CHANNEL.TYPE
-  'f091ae58-774c-45ff-9d8a-e30a83344e42', // Consumer ID
-  'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAq7BFUpkGp3...' // Private Key
+  '38b7eb6c-3672-4022-93a2-f47794f36338', // Client ID
+  'MIIBVgIBADANBgkqhkiG9w0BAQEFAASCAUAwggE8AgEAAkEAq7BFUpkGp3...' // Client Secret
 );
 ```
 
@@ -92,9 +91,6 @@ WMT.Orders.postShipingUpdate({
 ## Scripts
 
  - **npm run build** : `rimraf ./lib/ && tsc -p .`
- - **npm run readme** : `rm ./README.md && node ./node_modules/.bin/node-readme`
- - **npm run package** : `npm run build && npm run readme`
- - **npm run test** : `mocha --require ts-node/register $(find ./test/ -name "*.spec.ts")`
 
 ## Dependencies
 
