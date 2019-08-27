@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2019-08-26, Version 2.1.0, @kmcconnell
+
+### Notable Changes
+
+Eff. 2019-08-28, Walmart is deprecating the signature based request and requiring
+an update to use the Token API instead. Requests have been updated to use the
+new authentication method.
+
 ## 2018-04-22, Version 1.3.4, @kmcconnell
 
 ### Notable Changes
