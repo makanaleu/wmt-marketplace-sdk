@@ -39,6 +39,12 @@ export declare class OrderLine {
      */
     lineNumber: number;
     /**
+     * The 2-character country code where the item is shipped from, and
+     * needs to be provided for each individual item in a purchase order
+     * effective July 1, 2022.
+     */
+    shipFromCountry: string;
+    /**
      * A semantic wrapper for the list of OrderLine statuses.
      */
     orderLineStatuses: OrderLineStatuses;

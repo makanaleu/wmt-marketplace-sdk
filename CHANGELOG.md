@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2022-06-30, Version 2.2.0, @kmcconnell
+
+### Notable Changes
+
+Eff. 2022-07-01, Walmart requires a ShipFromCountry for each line item submitted
+via Shipping Updates.
+
 ## 2019-08-26, Version 2.1.0, @kmcconnell
 
 ### Notable Changes

@@ -1,4 +1,5 @@
-﻿import * as Config from './config';
+﻿/// <reference types="bluebird" />
+import * as Config from './config';
 import * as Promise from 'bluebird';
 export { Promise };
 /**

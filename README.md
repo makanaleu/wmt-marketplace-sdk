@@ -75,7 +75,7 @@ var shipment = new WMT.Orders.Shipment.OrderShipmentRequest(
   // See sample in /test/lib/orders.spec.ts ('Shipment Update').
 );
 
-WMT.Orders.postShipingUpdate({
+WMT.Orders.postShippingUpdate({
   PurchaseOrderId: 2380639477120,
   PurchaseOrderShipment: shipment
 }).then((response: string) => {
