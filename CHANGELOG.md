@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2022-06-30, Version 1.3.5, @kmcconnell
+
+### Notable Changes
+
+Effective July 1, 2022, Walmart requires a shipFromCountry parameter in shipping
+updates. However, the Canada Marketplace still uses the legacy authentication
+method. This version of the SDK was forked from 
+https://github.com/makanaleu/wmt-marketplace-sdk at version 1.3.4 to add the
+shipFromCountry property without using the newer token-based authentication.
+
 ## 2018-04-22, Version 1.3.4, @kmcconnell
 
 ### Notable Changes

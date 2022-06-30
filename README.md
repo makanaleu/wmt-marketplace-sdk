@@ -1,16 +1,20 @@
-# wmt-marketplace-sdk
+# wmt-marketplace-sdk-canada
 
-![npm](https://img.shields.io/npm/v/wmt-marketplace-sdk.svg) ![license](https://img.shields.io/npm/l/wmt-marketplace-sdk.svg) ![github-issues](https://img.shields.io/github/issues/makanaleu/wmt-marketplace-sdk.svg)
+![npm](https://img.shields.io/npm/v/wmt-marketplace-sdk-canada.svg) ![license](https://img.shields.io/npm/l/wmt-marketplace-sdk-canada.svg) ![github-issues](https://img.shields.io/github/issues/makanaleu/wmt-marketplace-sdk-canada.svg)
 
-Walmart Marketplace API SDK
+Walmart Marketplace API SDK (Canada Marketplace)
 
-![nodei.co](https://nodei.co/npm/wmt-marketplace-sdk.png?downloads=true&downloadRank=true&stars=true)
+![nodei.co](https://nodei.co/npm/wmt-marketplace-sdk-canada.png?downloads=true&downloadRank=true&stars=true)
 
-![stars](https://img.shields.io/github/stars/makanaleu/wmt-marketplace-sdk.svg)
-![forks](https://img.shields.io/github/forks/makanaleu/wmt-marketplace-sdk.svg)
+![stars](https://img.shields.io/github/stars/makanaleu/wmt-marketplace-sdk-canada.svg)
+![forks](https://img.shields.io/github/forks/makanaleu/wmt-marketplace-sdk-canada.svg)
 
-![](https://david-dm.org/makanaleu/wmt-marketplace-sdk/status.svg)
-![](https://david-dm.org/makanaleu/wmt-marketplace-sdk/dev-status.svg)
+![](https://david-dm.org/makanaleu/wmt-marketplace-sdk-canada/status.svg)
+![](https://david-dm.org/makanaleu/wmt-marketplace-sdk-canada/dev-status.svg)
+
+## Canada Marketplace
+
+This version of the Warlmart Marketplace API SDK is intended for use with the Walmart Canada Marketplace which still uses the legacy authentication method. For the U.S. Marketplace, see https://github.com/makanaleu/wmt-marketplace-sdk. 
 
 ## Features
 
@@ -32,7 +36,7 @@ You only need to set your API credentials once in the process. They don't need t
 set for each call within the same process.
 
 ```javascript
-import { WMT } from 'wmt-marketplace-sdk';
+import { WMT } from 'wmt-marketplace-sdk-canada';
 
 WMT.Request.Credentials = new WMT.Config.Credentials(
   '38b7eb6c-3672-4022-93a2-f47794f36338', // CHANNEL.TYPE
@@ -87,7 +91,7 @@ WMT.Orders.postShipingUpdate({
 
 ## Install
 
-`npm install --save wmt-marketplace-sdk`
+`npm install --save wmt-marketplace-sdk-canada`
 
 ## Scripts
 
