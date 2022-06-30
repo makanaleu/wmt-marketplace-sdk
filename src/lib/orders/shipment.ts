@@ -64,7 +64,7 @@ export class OrderLine {
 
   constructor(orderline: OrderLine) {
     this.lineNumber = orderline.lineNumber;
-    this.shipFromCountry = orderline.shipFromCountry
+    this.shipFromCountry = orderline.shipFromCountry;
     this.orderLineStatuses = orderline.orderLineStatuses;
   }
 }

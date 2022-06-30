@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2022-06-30, Version 2.2.1, @kmcconnell
+
+### Notable Changes
+
+- shipment:
+  - Fixed typo in shipFromCountry declaration.
+
 ## 2022-06-30, Version 2.2.0, @kmcconnell
 
 ### Notable Changes
