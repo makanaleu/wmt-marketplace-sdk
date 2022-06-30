@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2022-06-30, Version 1.4.0, @kmcconnell
+
+### Notable Changes
+
+- shipment:
+  - Added shipFromCountry property.
+
 ## 2022-06-30, Version 1.3.5, @kmcconnell
 
 ### Notable Changes

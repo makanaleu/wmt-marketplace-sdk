@@ -54,9 +54,15 @@ export class OrderLine {
   /**
    * A semantic wrapper for the list of OrderLine statuses.
    */
+  shipFromCountry: string;
+  /**
+   * A semantic wrapper for the list of OrderLine statuses.
+   */
   orderLineStatuses: OrderLineStatuses;
 
   constructor(orderline: OrderLine) {
+    this.lineNumber = orderline.lineNumber;
+    this.shipFromCountry = orderline.shipFromCountry;
     this.orderLineStatuses = orderline.orderLineStatuses;
   }
 }
