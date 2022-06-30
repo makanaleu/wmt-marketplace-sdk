@@ -1,6 +1,6 @@
 {
   "name": "wmt-marketplace-sdk",
-  "version": "2.1.14",
+  "version": "2.2.0",
   "description": "Walmart Marketplace API SDK",
   "main": "index.js",
   "directories": {
