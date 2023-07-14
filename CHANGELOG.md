@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2023-07-14, Version 2.2.2, @kmcconnell
+
+### Notable Changes
+
+- shipment:
+  - Added currentTrackingInfo in shipment.ts.
+
 ## 2022-06-30, Version 2.2.1, @kmcconnell
 
 ### Notable Changes
